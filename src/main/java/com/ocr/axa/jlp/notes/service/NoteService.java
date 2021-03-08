@@ -15,7 +15,6 @@ public class NoteService {
     @Autowired
     protected NoteDAO noteDAO;
 
-
     public List<Note> getAllNotes() {
         return noteDAO.findAll();
     }

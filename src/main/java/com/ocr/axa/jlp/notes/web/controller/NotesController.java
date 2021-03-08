@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/notes")
+@RequestMapping(path = "/patHistory")
 public class NotesController {
     private static final Logger logger = LogManager.getLogger("generalController");
 
@@ -29,6 +29,21 @@ public class NotesController {
     @RequestMapping("/")
     public List<Note> getAllNotes(@RequestParam(required = true) Long patientId) {
         return noteService.getNotes(patientId);
+    }
+
+    @RequestMapping("/id")
+    public  Note getNotesById(@RequestParam(required = true) String id) {
+
+        Optional<Note> noteFound = noteService.findNote(id);
+        if (!noteFound.isPresent()){
+            logger.error("Note not found");
+            throw new ControllerException(("Note not found"));
+        }
+        else {
+            logger.info(" get note by idNote : OK");
+            return noteFound.get();
+        }
+
     }
 
     @PostMapping("/add")
@@ -52,7 +67,7 @@ public class NotesController {
         return new ResponseEntity(note, HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/id")
     public Boolean deleteNotes(@RequestParam(required = true) String noteId) {
 
         Optional<Note> noteFound = noteService.findNote(noteId);

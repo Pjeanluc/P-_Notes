@@ -23,6 +23,13 @@ public class Note {
         this.dateNote = dateNote;
     }
 
+    public Note(String id, String note, Long patientId, LocalDate dateNote) {
+        this.id = id;
+        this.note = note;
+        this.patientId = patientId;
+        this.dateNote = dateNote;
+    }
+
     public String getId() {
         return id;
     }
