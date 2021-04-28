@@ -18,14 +18,15 @@ import java.util.ResourceBundle;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LogManager.getLogger(SecurityConfig.class);
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().authorizeRequests().anyRequest().authenticated().and().httpBasic();
-
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui.html").permitAll()
+                .anyRequest().authenticated().and().httpBasic();
     }
-    
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -33,9 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ResourceBundle bundle = ResourceBundle.getBundle("application");
         String myUser = bundle.getString("application.security.user.name");
         String myPwd = bundle.getString("application.security.user.password");
-        myPwd = "{noop}" +myPwd;
-        logger.info( myUser + "  -  " +myPwd);
-     auth.inMemoryAuthentication()
+        myPwd = "{noop}" + myPwd;
+        logger.info(myUser + "  -  " + myPwd);
+        auth.inMemoryAuthentication()
                 .withUser(myUser)
                 .password(myPwd)
                 .roles("USER");
@@ -45,10 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    
+
     @Bean
-    public HttpTraceRepository htttpTraceRepository()
-    {
+    public HttpTraceRepository htttpTraceRepository() {
         return new InMemoryHttpTraceRepository();
     }
 
