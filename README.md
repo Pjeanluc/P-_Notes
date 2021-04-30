@@ -10,6 +10,13 @@ Micro-service note manage the notes for a patient.
 - MongoDB
 
 ## Installation
+
+### Database MongoDB
+- create the database "mediscreen"
+- create the user adminmediscreen
+- create the collection note
+- create a database "mediscreentest", a collection and a user for the tests
+
 ### Host file
 
 - 127.0.0.1 note
